@@ -1,2 +1,3 @@
-# bajo_website
+# bajo website
+
 Source code for the Bajo Website
