@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bajo — Drink Differently. Live Fully.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F0EBE3;
+    --parchment: #E8E0D4;
+    --forest: #2C4A35;
+    --forest-dark: #1A2E21;
+    --terracotta: #8B4A3C;
+    --gold: #C8BEB2;
+    --warm-brown: #5C3D2E;
+    --stone: #9E9589;
+    --text: #2A2118;
+    --text-light: #6B5D52;
+  }
+ 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+ 
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--forest);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid var(--forest);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.4s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.5;
+  }
+ 
+  /* Navigation */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: multiply;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--forest);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--forest);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  .nav-links a:hover { opacity: 1; }
+ 
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    background: var(--forest);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 80px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    top: -20%; left: -20%;
+    width: 140%; height: 140%;
+    background: radial-gradient(ellipse at 30% 70%, rgba(214,203,186,0.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-tagline {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240,235,227,0.5);
+    margin-bottom: 32px;
+  }
+  .hero-headline {
+    font-size: clamp(56px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 0.95;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+  }
+  .hero-headline em {
+    font-style: italic;
+    color: rgba(214,203,186,0.95);
+  }
+  .hero-sub {
+    margin-top: 40px;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(240,235,227,0.65);
+    max-width: 320px;
+    font-style: italic;
+  }
+  .hero-cta {
+    margin-top: 52px;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .btn-primary {
+    background: var(--forest);
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    border: none;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+    cursor: none;
+  }
+  .btn-primary:hover { background: var(--forest-dark); transform: translateY(-1px); }
+  .btn-ghost {
+    color: rgba(240,235,227,0.6);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(240,235,227,0.2);
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+    cursor: none;
+  }
+  .btn-ghost:hover { color: var(--cream); border-color: rgba(240,235,227,0.5); }
+ 
+  .hero-right {
+    background: var(--parchment);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-bottle-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 60% 40%, rgba(214,203,186,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 30% 80%, rgba(44,74,53,0.06) 0%, transparent 50%);
+  }
+  .hero-bottle-art {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+  .bottle-illustration {
+    width: 220px;
+    margin: 0 auto 32px;
+    opacity: 0.95;
+  }
+  /* SVG Bottle */
+  .hero-percent {
+    font-size: 120px;
+    font-weight: 300;
+    color: var(--forest);
+    opacity: 0.06;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    letter-spacing: -0.04em;
+    pointer-events: none;
+  }
+  .hero-bottle-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: var(--stone);
+    animation: scrollDown 1.8s ease-in-out infinite;
+    transform-origin: top;
+  }
+  @keyframes scrollDown {
+    0% { transform: scaleY(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: scaleY(1); opacity: 0; }
+  }
+ 
+  /* Ticker */
+  .ticker-wrap {
+    background: var(--forest-dark);
+    overflow: hidden;
+    padding: 14px 0;
+  }
+  .ticker {
+    display: flex;
+    gap: 80px;
+    animation: ticker 22s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+  .ticker span {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240,235,227,0.45);
+  }
+  .ticker .accent { color: var(--stone); }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+ 
+  /* Section: What is Bajo */
+  .section-what {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+  .what-text {
+    padding: 100px 80px 100px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--stone);
+  }
+  .section-heading {
+    font-size: clamp(42px, 4vw, 64px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--forest);
+    margin-bottom: 32px;
+  }
+  .section-heading em { font-style: italic; color: var(--terracotta); }
+  .section-body {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-light);
+    max-width: 420px;
+  }
+  .pronunciation {
+    margin-top: 48px;
+    padding: 24px 28px;
+    border-left: 2px solid var(--stone);
+    background: rgba(214,203,186,0.12);
+  }
+  .pronunciation .pron-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 8px;
+  }
+  .pronunciation .pron-text {
+    font-size: 28px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--forest);
+  }
+  .pronunciation .pron-meaning {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--text-light);
+    font-style: italic;
+  }
+ 
+  .what-visual {
+    background: var(--forest);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .what-visual-inner {
+    position: relative;
+    z-index: 2;
+    padding: 60px;
+    text-align: center;
+  }
+  .what-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(214,203,186,0.22) 0%, transparent 65%);
+  }
+  .mantra-lines {
+    text-align: left;
+  }
+  .mantra-line {
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: 300;
+    line-height: 1.5;
+    color: rgba(240,235,227,0.85);
+    display: block;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .mantra-line.italic { font-style: italic; color: rgba(214,203,186,0.95); }
+  .mantra-line:nth-child(1) { animation-delay: 0.1s; }
+  .mantra-line:nth-child(2) { animation-delay: 0.25s; }
+  .mantra-line:nth-child(3) { animation-delay: 0.4s; }
+  .mantra-line:nth-child(4) { animation-delay: 0.55s; }
+  .mantra-line:nth-child(5) { animation-delay: 0.7s; }
+  .mantra-line:nth-child(6) { animation-delay: 0.85s; }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+ 
+  /* Product Section */
+  .section-product {
+    padding: 120px 64px;
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .product-visual {
+    position: relative;
+  }
+  .product-main-box {
+    background: var(--forest);
+    padding: 80px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-main-box::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 200px; height: 200px;
+    border: 1px solid rgba(214,203,186,0.35);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .product-main-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(214,203,186,0.25) 0%, transparent 60%);
+  }
+  .product-name-large {
+    font-size: 100px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(240,235,227,0.12);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    position: absolute;
+    bottom: 20px; right: 20px;
+    pointer-events: none;
+  }
+  .product-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(240,235,227,0.1);
+    margin-top: 48px;
+    position: relative;
+    z-index: 2;
+  }
+  .product-stat {
+    background: var(--forest);
+    padding: 28px 24px;
+  }
+  .stat-value {
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+    display: block;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240,235,227,0.4);
+    display: block;
+    margin-top: 4px;
+  }
+  .product-hero-text {
+    position: relative;
+    z-index: 2;
+  }
+  .product-hero-text h3 {
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+ 
+  .product-info {
+    padding-top: 20px;
+  }
+  .product-info h2 {
+    font-size: clamp(36px, 3.5vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--forest);
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  .product-info h2 em { font-style: italic; color: var(--terracotta); }
+  .product-desc {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-light);
+    margin-bottom: 20px;
+  }
+  .flavour-notes {
+    margin: 40px 0;
+  }
+  .flavour-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 20px;
+  }
+  .notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .note-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .note-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--stone);
+    flex-shrink: 0;
+  }
+  .note-name {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text);
+    font-style: italic;
+  }
+  .note-bar-wrap {
+    flex: 1;
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .note-bar {
+    height: 100%;
+    background: var(--stone);
+    width: 0;
+    transition: width 1.5s ease;
+  }
+  .bottle-box-note {
+    background: var(--parchment);
+    border-left: 2px solid var(--terracotta);
+    padding: 20px 24px;
+    margin-top: 32px;
+  }
+  .bottle-box-note p {
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+  }
+  .cta-row {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .btn-forest {
+    background: var(--forest);
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 18px 40px;
+    border: none;
+    text-decoration: none;
+    cursor: none;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-forest:hover { background: var(--forest-dark); transform: translateY(-1px); }
+  .price-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--forest);
+    letter-spacing: -0.01em;
+  }
+  .price-tag span {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--stone);
+    letter-spacing: 0;
+  }
+ 
+  /* Values / Mantra */
+  .section-mantra {
+    background: var(--forest-dark);
+    padding: 120px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .section-mantra::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 50%, rgba(214,203,186,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 20%, rgba(44,74,53,0.4) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .mantra-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+    position: relative;
+    z-index: 2;
+  }
+  .mantra-grid-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(240,235,227,0.3);
+    margin-bottom: 20px;
+  }
+  .mantra-grid-heading {
+    font-size: clamp(40px, 4vw, 60px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    position: sticky;
+    top: 100px;
+  }
+  .mantra-grid-heading em { color: var(--stone); font-style: italic; }
+  .manifesto-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .manifesto-item {
+    padding: 36px 0;
+    border-bottom: 1px solid rgba(240,235,227,0.08);
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+  }
+  .manifesto-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(190,180,168,0.7);
+    letter-spacing: 0.1em;
+    padding-top: 6px;
+    flex-shrink: 0;
+    width: 28px;
+  }
+  .manifesto-text {
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: 300;
+    color: rgba(240,235,227,0.8);
+    line-height: 1.45;
+  }
+  .manifesto-text em { font-style: italic; color: rgba(214,203,186,0.95); }
+ 
+  /* Occasion section */
+  .section-occasions {
+    padding: 120px 64px;
+    background: var(--cream);
+  }
+  .occasions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+  }
+  .occasions-header h2 {
+    font-size: clamp(40px, 4vw, 60px);
+    font-weight: 300;
+    color: var(--forest);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .occasions-header h2 em { font-style: italic; color: var(--terracotta); }
+  .occasions-header p {
+    max-width: 280px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+    font-style: italic;
+    text-align: right;
+  }
+  .occasions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .occasion-card {
+    background: var(--parchment);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .occasion-card:hover { background: var(--forest); }
+  .occasion-card:hover .occasion-title,
+  .occasion-card:hover .occasion-desc { color: var(--cream); }
+  .occasion-card:hover .occasion-num { color: rgba(190,180,168,0.7); }
+  .occasion-card:nth-child(2) { margin-top: 32px; }
+  .occasion-card:nth-child(3) { margin-top: -32px; }
+  .occasion-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--stone);
+    margin-bottom: 32px;
+    transition: color 0.4s;
+  }
+  .occasion-title {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--forest);
+    line-height: 1.1;
+    margin-bottom: 16px;
+    font-style: italic;
+    transition: color 0.4s;
+  }
+  .occasion-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+    transition: color 0.4s;
+  }
+ 
+  /* How to serve */
+  .section-serve {
+    background: var(--parchment);
+    padding: 120px 64px;
+  }
+  .serve-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .serve-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .serve-header h2 {
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 300;
+    color: var(--forest);
+    letter-spacing: -0.02em;
+    line-height: 1.0;
+  }
+  .serve-header h2 em { font-style: italic; color: var(--stone); }
+  .serve-header p {
+    margin-top: 24px;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--text-light);
+  }
+  .serves-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .serve-item {
+    background: var(--cream);
+    padding: 48px 48px;
+    display: flex;
+    gap: 32px;
+  }
+  .serve-num-col {
+    flex-shrink: 0;
+  }
+  .serve-num {
+    font-size: 64px;
+    font-weight: 300;
+    color: rgba(44,74,53,0.1);
+    line-height: 1;
+    font-style: italic;
+    letter-spacing: -0.04em;
+  }
+  .serve-content h3 {
+    font-size: 24px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--forest);
+    margin-bottom: 12px;
+  }
+  .serve-content p {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+  }
+  .serve-content .serve-badge {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--stone);
+    border: 1px solid rgba(214,203,186,0.5);
+    padding: 6px 12px;
+  }
+ 
+  /* Community */
+  .section-community {
+    background: var(--forest);
+    padding: 120px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .section-community::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 60%, rgba(214,203,186,0.15) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .community-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .community-inner h2 {
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  .community-inner h2 em { font-style: italic; color: var(--stone); }
+  .community-inner p {
+    font-size: 17px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(240,235,227,0.65);
+    line-height: 1.8;
+    margin-bottom: 56px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+  }
+  .social-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240,235,227,0.45);
+    text-decoration: none;
+    transition: color 0.3s;
+    cursor: none;
+  }
+  .social-link:hover { color: var(--stone); }
+ 
+  /* Footer */
+  footer {
+    background: var(--forest-dark);
+    padding: 80px 64px 48px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 64px;
+  }
+  .footer-brand .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 20px;
+    text-decoration: none;
+  }
+  .footer-brand p {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(240,235,227,0.4);
+    line-height: 1.7;
+    font-style: italic;
+    max-width: 280px;
+  }
+  .footer-col h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240,235,227,0.3);
+    margin-bottom: 24px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 12px; }
+  .footer-col ul a {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(240,235,227,0.55);
+    text-decoration: none;
+    transition: color 0.3s;
+    cursor: none;
+  }
+  .footer-col ul a:hover { color: var(--cream); }
+  .footer-bottom {
+    background: var(--forest-dark);
+    border-top: 1px solid rgba(240,235,227,0.08);
+    padding: 24px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom p {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: rgba(240,235,227,0.25);
+    text-transform: uppercase;
+  }
+  .footer-bottom .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(240,235,227,0.3);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+ 
+  /* Page load animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+ 
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 24px 28px; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { min-height: 80vh; padding: 120px 32px 64px; }
+    .hero-right { min-height: 40vh; }
+    .section-what { grid-template-columns: 1fr; }
+    .what-text { padding: 64px 32px; }
+    .section-product { grid-template-columns: 1fr; padding: 64px 32px; gap: 48px; }
+    .mantra-grid { grid-template-columns: 1fr; gap: 48px; }
+    .mantra-grid-heading { position: static; }
+    .occasions-grid { grid-template-columns: 1fr; }
+    .occasion-card:nth-child(2), .occasion-card:nth-child(3) { margin-top: 0; }
+    .serves-list { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr; gap: 40px; padding: 64px 32px 32px; }
+    .footer-bottom { padding: 20px 32px; flex-direction: column; gap: 8px; text-align: center; }
+    .section-mantra, .section-occasions, .section-serve, .section-community { padding: 80px 32px; }
+    .occasions-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .occasions-header p { text-align: left; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+ 
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+ 
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Bajo</a>
+  <ul class="nav-links">
+    <li><a href="#product">The Spirit</a></li>
+    <li><a href="#mantra">Our Belief</a></li>
+    <li><a href="#serve">How to Drink</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#shop" style="opacity:1; color: var(--stone)">Shop</a></li>
+  </ul>
+</nav>
+ 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tagline">15% Agave Spirit — Consciously Crafted in the UK</p>
+    <h1 class="hero-headline">
+      Drink<br>
+      differ<em>ently.</em><br>
+      Live fully.
+    </h1>
+    <p class="hero-sub">An agave spirit built around flavour. Lower alcohol, made to be savoured — not just consumed.</p>
+    <div class="hero-cta">
+      <a href="#shop" class="btn-primary">Shop Now</a>
+      <a href="#product" class="btn-ghost">Discover Bajo</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bottle-bg"></div>
+    <span class="hero-percent">15%</span>
+    <div class="hero-bottle-art">
+      <svg class="bottle-illustration" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Green marble gradient for stone lid -->
+          <radialGradient id="stoneGrad" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#6aab7a"/>
+            <stop offset="35%" stop-color="#3d7a52"/>
+            <stop offset="70%" stop-color="#2a5e3c"/>
+            <stop offset="100%" stop-color="#1e4a2e"/>
+          </radialGradient>
+          <!-- Marble veining overlay -->
+          <radialGradient id="stoneSheen" cx="60%" cy="25%" r="50%">
+            <stop offset="0%" stop-color="rgba(180,220,190,0.5)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <!-- Glass body gradient -->
+          <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(210,205,198,0.55)"/>
+            <stop offset="18%" stop-color="rgba(245,242,238,0.75)"/>
+            <stop offset="50%" stop-color="rgba(252,250,247,0.45)"/>
+            <stop offset="82%" stop-color="rgba(245,242,238,0.7)"/>
+            <stop offset="100%" stop-color="rgba(200,195,188,0.5)"/>
+          </linearGradient>
+          <!-- Gold label gradient -->
+          <linearGradient id="labelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#c8a84b"/>
+            <stop offset="40%" stop-color="#e8c96a"/>
+            <stop offset="100%" stop-color="#a07830"/>
+          </linearGradient>
+          <!-- Wood collar gradient -->
+          <linearGradient id="woodGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#5c3520"/>
+            <stop offset="30%" stop-color="#8b5030"/>
+            <stop offset="60%" stop-color="#6e3e24"/>
+            <stop offset="100%" stop-color="#4a2a14"/>
+          </linearGradient>
+          <filter id="glassShadow">
+            <feDropShadow dx="3" dy="6" stdDeviation="6" flood-color="rgba(40,30,20,0.18)"/>
+          </filter>
+        </defs>
+ 
+        <!-- Drop shadow -->
+        <ellipse cx="100" cy="286" rx="52" ry="7" fill="rgba(40,30,20,0.12)"/>
+ 
+        <!-- BODY — wide, squat, rounded rectangle shape like the real bottle -->
+        <!-- Outer glass shape -->
+        <path d="
+          M72 88
+          C72 88 30 95 22 140
+          C16 172 18 210 22 238
+          C26 258 50 272 100 272
+          C150 272 174 258 178 238
+          C182 210 184 172 178 140
+          C170 95 128 88 128 88
+          Z"
+          fill="url(#glassGrad)"
+          stroke="rgba(190,182,172,0.6)"
+          stroke-width="1.2"
+          filter="url(#glassShadow)"
+        />
+ 
+        <!-- Inner glass shimmer left edge -->
+        <path d="M32 135 C28 165 28 205 34 238 C36 248 42 258 52 264"
+          stroke="rgba(255,255,255,0.35)" stroke-width="3" fill="none" stroke-linecap="round"/>
+ 
+        <!-- Inner glass shimmer right edge -->
+        <path d="M168 135 C172 165 172 205 166 238 C164 248 158 258 148 264"
+          stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none" stroke-linecap="round"/>
+ 
+        <!-- Subtle interior tint -->
+        <path d="
+          M38 148 C34 175 35 208 40 234 C44 252 62 266 100 266
+          C138 266 156 252 160 234 C165 208 166 175 162 148
+          C154 112 120 104 100 104 C80 104 46 112 38 148 Z"
+          fill="rgba(214,203,186,0.12)"/>
+ 
+        <!-- GOLD LABEL — rectangular with rounded corners, gold foil look -->
+        <rect x="58" y="170" width="84" height="44" rx="3"
+          fill="url(#labelGrad)"
+          stroke="rgba(200,165,60,0.6)" stroke-width="0.5"/>
+        <!-- Label highlight -->
+        <rect x="60" y="171" width="80" height="12" rx="2"
+          fill="rgba(255,240,180,0.25)"/>
+        <!-- Bajo script text -->
+        <text x="100" y="200" text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="22" font-style="italic" font-weight="400"
+          fill="#2a1a08" opacity="0.85"
+          letter-spacing="1">Bajo</text>
+ 
+        <!-- NECK — narrow, short -->
+        <rect x="85" y="62" width="30" height="28" rx="4"
+          fill="rgba(235,230,224,0.7)"
+          stroke="rgba(180,172,162,0.5)" stroke-width="1"/>
+        <!-- Neck highlight -->
+        <rect x="88" y="63" width="10" height="26" rx="3"
+          fill="rgba(255,255,255,0.25)"/>
+ 
+        <!-- WOOD COLLAR — sits between neck and stone lid -->
+        <rect x="82" y="46" width="36" height="18" rx="5"
+          fill="url(#woodGrad)"/>
+        <!-- Wood grain lines -->
+        <line x1="84" y1="50" x2="116" y2="50" stroke="rgba(255,220,180,0.15)" stroke-width="1"/>
+        <line x1="84" y1="54" x2="116" y2="54" stroke="rgba(0,0,0,0.1)" stroke-width="0.5"/>
+        <line x1="84" y1="58" x2="116" y2="58" stroke="rgba(255,220,180,0.1)" stroke-width="1"/>
+ 
+        <!-- STONE LID — large flat disc / pebble shape -->
+        <!-- Lid body -->
+        <ellipse cx="100" cy="32" rx="38" ry="20" fill="url(#stoneGrad)"/>
+        <!-- Lid top face -->
+        <ellipse cx="100" cy="26" rx="38" ry="20" fill="url(#stoneGrad)"/>
+        <!-- Lid sheen -->
+        <ellipse cx="100" cy="26" rx="38" ry="20" fill="url(#stoneSheen)"/>
+        <!-- Marble vein 1 -->
+        <path d="M72 20 Q88 28 108 18 Q122 12 132 22"
+          stroke="rgba(180,230,195,0.3)" stroke-width="1.5" fill="none"/>
+        <!-- Marble vein 2 -->
+        <path d="M80 32 Q95 24 115 30"
+          stroke="rgba(100,180,120,0.2)" stroke-width="1" fill="none"/>
+        <!-- Marble gold fleck -->
+        <path d="M105 15 Q110 20 108 26"
+          stroke="rgba(200,180,80,0.4)" stroke-width="0.8" fill="none"/>
+        <!-- Lid side depth -->
+        <path d="M62 26 Q62 38 100 40 Q138 38 138 26"
+          fill="rgba(30,60,40,0.4)"/>
+        <!-- Lid highlight -->
+        <ellipse cx="88" cy="20" rx="14" ry="6" fill="rgba(200,240,210,0.2)"/>
+      </svg>
+      <p class="hero-bottle-label">Sculptural glass · Stone lid · Built to last</p>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+</section>
+ 
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>Organic · Agave-Based Spirit</span>
+    <span class="accent">✦</span>
+    <span>15% ABV</span>
+    <span class="accent">✦</span>
+    <span>Crafted in the UK</span>
+    <span class="accent">✦</span>
+    <span>Lavender · Hibiscus · Orange</span>
+    <span class="accent">✦</span>
+    <span>Flavour-Led · Lower Alcohol</span>
+    <span class="accent">✦</span>
+    <span>Organic · Agave-Based Spirit</span>
+    <span class="accent">✦</span>
+    <span>15% ABV</span>
+    <span class="accent">✦</span>
+    <span>Crafted in the UK</span>
+    <span class="accent">✦</span>
+    <span>Lavender · Hibiscus · Orange</span>
+    <span class="accent">✦</span>
+    <span>Flavour-Led · Lower Alcohol</span>
+    <span class="accent">✦</span>
+  </div>
+</div>
+ 
+<!-- WHAT IS BAJO -->
+<section class="section-what">
+  <div class="what-text reveal">
+    <span class="section-label">The name</span>
+    <h2 class="section-heading"><em>"Ba-ho"</em><br>Spanish for low.<br>The spirit, not the mood.</h2>
+    <p class="section-body">Bajo is an organic agave spirit at 15% — made to drink properly, not cautiously. Bright with lavender, hibiscus and orange. The kind of thing you pour again without thinking about it.</p>
+    <p class="section-body" style="margin-top: 16px;">Crafted in the UK around flavour first. Lower alcohol is the method, not the message.</p>
+    <div class="pronunciation">
+      <p class="pron-label">Pronunciation</p>
+      <p class="pron-text">"Ba-ho"</p>
+      <p class="pron-meaning">Spanish · adjective · meaning: low</p>
+    </div>
+  </div>
+  <div class="what-visual">
+    <div class="what-visual-inner">
+      <div class="mantra-lines">
+        <span class="mantra-line">The table is full.</span>
+        <span class="mantra-line italic">The music is louder.</span>
+        <span class="mantra-line">The bottle is still going.</span>
+        <span class="mantra-line" style="margin-top: 32px; font-size: clamp(14px, 1.4vw, 20px); color: rgba(240,235,227,0.4);">This is Bajo.</span>
+        <span class="mantra-line italic" style="font-size: clamp(14px, 1.4vw, 20px);">Drink it well.</span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- PRODUCT -->
+<section class="section-product" id="product">
+  <div class="product-visual reveal">
+    <div class="product-main-box">
+      <div class="product-hero-text">
+        <h3>Take me<br>home.</h3>
+      </div>
+      <div class="product-details-grid">
+        <div class="product-stat">
+          <span class="stat-value">15%</span>
+          <span class="stat-label">Alcohol by Volume</span>
+        </div>
+        <div class="product-stat">
+          <span class="stat-value">Agave</span>
+          <span class="stat-label">Spirit Base</span>
+        </div>
+        <div class="product-stat">
+          <span class="stat-value">UK</span>
+          <span class="stat-label">Crafted & Bottled</span>
+        </div>
+        <div class="product-stat">
+          <span class="stat-value">Organic</span>
+          <span class="stat-label">Ingredients</span>
+        </div>
+      </div>
+      <div class="product-name-large">bajo</div>
+    </div>
+  </div>
+ 
+  <div class="product-info reveal">
+    <span class="section-label">The spirit</span>
+    <h2>Fresh, vibrant,<br>and <em>layered.</em></h2>
+    <p class="product-desc">A 15% agave-based spirit, crafted in the UK. Bright, floral and layered — with the depth you'd expect from something considerably stronger.</p>
+    <p class="product-desc">Lavender, hibiscus, orange. Built for long evenings and slow pours.</p>
+ 
+    <div class="flavour-notes">
+      <p class="flavour-label">Flavour notes</p>
+      <div class="notes-list">
+        <div class="note-item">
+          <div class="note-dot"></div>
+          <span class="note-name">Lavender</span>
+          <div class="note-bar-wrap"><div class="note-bar" style="width:85%"></div></div>
+        </div>
+        <div class="note-item">
+          <div class="note-dot"></div>
+          <span class="note-name">Hibiscus</span>
+          <div class="note-bar-wrap"><div class="note-bar" style="width:72%"></div></div>
+        </div>
+        <div class="note-item">
+          <div class="note-dot"></div>
+          <span class="note-name">Orange</span>
+          <div class="note-bar-wrap"><div class="note-bar" style="width:60%"></div></div>
+        </div>
+        <div class="note-item">
+          <div class="note-dot"></div>
+          <span class="note-name">Agave</span>
+          <div class="note-bar-wrap"><div class="note-bar" style="width:90%"></div></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="bottle-box-note">
+      <p>Encased in a sculptural glass bottle, intentionally imperfect in form and finished with a solid stone lid. Designed not to be discarded — a lasting object shaped by the moments it holds.</p>
+    </div>
+ 
+    <div class="cta-row">
+      <a href="#shop" class="btn-forest">Buy a Bottle</a>
+      <div class="price-tag">£35 <span>free delivery over £50</span></div>
+    </div>
+  </div>
+</section>
+ 
+<!-- MANTRA -->
+<section class="section-mantra" id="mantra">
+  <div class="mantra-grid">
+    <div>
+      <p class="mantra-grid-label">Our belief</p>
+      <h2 class="mantra-grid-heading">Made for people who <em>drink well.</em></h2>
+    </div>
+    <div class="manifesto-lines reveal">
+      <div class="manifesto-item">
+        <span class="manifesto-num">01</span>
+        <p class="manifesto-text">We believe the best drinks are the ones you actually taste. <em>Flavour over volume.</em> Always.</p>
+      </div>
+      <div class="manifesto-item">
+        <span class="manifesto-num">02</span>
+        <p class="manifesto-text">Long dinners. Louder music. Shared stories. <em>Bajo is made to stay at the table,</em> not leave early.</p>
+      </div>
+      <div class="manifesto-item">
+        <span class="manifesto-num">03</span>
+        <p class="manifesto-text">We design bottles that earn a place on the shelf. <em>Objects that outlast the occasion.</em></p>
+      </div>
+      <div class="manifesto-item">
+        <span class="manifesto-num">04</span>
+        <p class="manifesto-text">Agave, lavender, hibiscus, orange. <em>Crafted in the UK.</em> Nothing wasted. Nothing hidden.</p>
+      </div>
+      <div class="manifesto-item" style="border-bottom: none; padding-bottom: 0;">
+        <span class="manifesto-num">✦</span>
+        <p class="manifesto-text" style="font-size: clamp(22px, 2.5vw, 34px); color: var(--cream);">Drink differently.<br><em>Live fully.</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- OCCASIONS -->
+<section class="section-occasions">
+  <div class="occasions-header">
+    <div>
+      <h2>Made for<br><em>every occasion.</em></h2>
+    </div>
+    <p>Bajo moves with you — from the first pour to whenever the last one happens to be.</p>
+  </div>
+  <div class="occasions-grid reveal">
+    <div class="occasion-card">
+      <p class="occasion-num">01 · Ritual</p>
+      <h3 class="occasion-title">The long dinner</h3>
+      <p class="occasion-desc">Candles low, the table still full. Bajo holds its own across three courses without taking the room hostage. Pour it, forget about it, pour again.</p>
+    </div>
+    <div class="occasion-card">
+      <p class="occasion-num">02 · Energy</p>
+      <h3 class="occasion-title">The night out</h3>
+      <p class="occasion-desc">Louder music, better stories. Bajo keeps pace without the weight of something heavier. Still a real drink. Still a real night.</p>
+    </div>
+    <div class="occasion-card">
+      <p class="occasion-num">03 · Ease</p>
+      <h3 class="occasion-title">The quiet one</h3>
+      <p class="occasion-desc">Solo, over ice, no occasion necessary. The kind of drink that rewards slowing down — complex enough to be interesting, easy enough to just enjoy.</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- HOW TO SERVE -->
+<section class="section-serve" id="serve">
+  <div class="serve-inner">
+    <div class="serve-header reveal">
+      <h2>How to<br><em>drink Bajo</em></h2>
+      <p>Simple rituals for the moments that matter.</p>
+    </div>
+    <div class="serves-list reveal">
+      <div class="serve-item">
+        <div class="serve-num-col"><span class="serve-num">I</span></div>
+        <div class="serve-content">
+          <h3>Neat, over a single cube</h3>
+          <p>The purest way to meet Bajo. One large ice cube, a wide glass. Let the lavender open as it chills. Sip slowly — there's nowhere to be.</p>
+          <span class="serve-badge">The Classic</span>
+        </div>
+      </div>
+      <div class="serve-item">
+        <div class="serve-num-col"><span class="serve-num">II</span></div>
+        <div class="serve-content">
+          <h3>With tonic & a twist</h3>
+          <p>60ml Bajo over ice, topped with premium tonic, finished with a curl of orange peel. Bright, floral, effortless. The glass that starts every good evening.</p>
+          <span class="serve-badge">The Signature</span>
+        </div>
+      </div>
+      <div class="serve-item">
+        <div class="serve-num-col"><span class="serve-num">III</span></div>
+        <div class="serve-content">
+          <h3>The Bajo Margarita</h3>
+          <p>60ml Bajo, fresh lime, agave syrup, shaken with ice. Rim with Tajín if you're feeling it. Pour for friends. Repeat.</p>
+          <span class="serve-badge">The Crowd-Pleaser</span>
+        </div>
+      </div>
+      <div class="serve-item">
+        <div class="serve-num-col"><span class="serve-num">IV</span></div>
+        <div class="serve-content">
+          <h3>Hibiscus Spritz</h3>
+          <p>Bajo with hibiscus syrup, a splash of sparkling water, and fresh mint. Pink, stunning, and completely alive. The one everyone asks about.</p>
+          <span class="serve-badge">The Showpiece</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- COMMUNITY -->
+<section class="section-community" id="community">
+  <div class="community-inner reveal">
+    <span class="section-label" style="justify-content: center; margin-bottom: 32px;">The gathering</span>
+    <h2>Be part of<br><em>the gather</em></h2>
+    <p>Good bottles find good tables. Share yours — tag us and pull up a seat.</p>
+    <div class="social-links">
+      <a href="#" class="social-link">Instagram</a>
+      <a href="#" class="social-link">TikTok</a>
+      <a href="#" class="social-link">Newsletter</a>
+    </div>
+  </div>
+</section>
+ 
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a href="#" class="footer-logo">Bajo</a>
+    <p>An organic agave spirit at 15%. Layered with lavender, hibiscus and orange. Made in the UK for people who drink with intention — not abstinence.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Navigate</h4>
+    <ul>
+      <li><a href="#product">The Spirit</a></li>
+      <li><a href="#mantra">Our Story</a></li>
+      <li><a href="#serve">How to Drink</a></li>
+      <li><a href="#shop">Shop</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Connect</h4>
+    <ul>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">TikTok</a></li>
+      <li><a href="#">Stockists</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 Bajo Spirit Ltd · Drink Responsibly</p>
+  <p class="footer-tagline">Drink differently. Live fully.</p>
+  <p>15% ABV · UK Made</p>
+</div>
+ 
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+  });
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width = '52px'; ring.style.height = '52px'; ring.style.opacity = '0.25'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.opacity = '0.5'; });
+  });
+ 
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => obs.observe(el));
+ 
+  // Animate flavour bars on scroll
+  const bars = document.querySelectorAll('.note-bar');
+  const barObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        bars.forEach(b => { b.style.width = b.style.width; });
+      }
+    });
+  }, { threshold: 0.5 });
+  if (bars.length) barObs.observe(bars[0].closest('.flavour-notes'));
+</script>
+ 
+</body>
+</html>
